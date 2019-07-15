@@ -1,36 +1,16 @@
 package com.exadel.carpoolfree.web;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.util.StringUtils;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.List;
+@Configuration
+public class ThymeleafWebController implements WebMvcConfigurer {
 
-@Controller
-public class ThymeleafWebController {
-
-    // inject via application.properties
-    @Value("${welcome.message}")
-    private String message;
-
-    private List<String> tasks = Arrays.asList("a", "b", "c", "d", "e", "f", "g");
-
-    // /hello?name=yourname
-    @GetMapping("/hello")
-    public String mainWithParam(@RequestParam(name = "name", required = false, defaultValue = "")
-                                        String name, Model model) {
-
-        if (StringUtils.isEmpty(name)) {
-            model.addAttribute("message", message);
-            model.addAttribute("tasks", tasks);
-        }
-
-        model.addAttribute("message", name);
-
-        return "welcome"; //view
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/home").setViewName("home");
+        registry.addViewController("/").setViewName("home");
+        registry.addViewController("/hello").setViewName("hello");
+        registry.addViewController("/login").setViewName("login");
     }
 }
